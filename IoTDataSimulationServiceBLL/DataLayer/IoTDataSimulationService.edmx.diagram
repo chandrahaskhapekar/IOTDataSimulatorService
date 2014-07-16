@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8bbb1702d4e2448da9dbe59106ffdbfa" Name="Diagram1">
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.Role" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.SchemaFile" Width="1.5" PointX="5.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.SimulatorProcessDetail" Width="1.5" PointX="7.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.Simulator" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.URLDetail" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.UserInRole" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IoTDataSimulatorDBModel.User" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__UserInRol__RoleI__1273C1CD" ManuallyRouted="false" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__SchemaFil__Simul__1CF15040" ManuallyRouted="false" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__Simulator__Schem__22AA2996" ManuallyRouted="false" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__Simulator__Simul__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__Simulator__UserI__0519C6AF" ManuallyRouted="false" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__URLDetail__Simul__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="IoTDataSimulatorDBModel.FK__UserInRol__UserI__117F9D94" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

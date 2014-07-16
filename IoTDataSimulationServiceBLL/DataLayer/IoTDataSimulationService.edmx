@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IoTDataSimulatorDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SchemaFiles">
+          <Key>
+            <PropertyRef Name="SchemaFileID" />
+          </Key>
+          <Property Name="SchemaFileID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SimulatorID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="XSDFile" Type="xml" Nullable="false" />
+          <Property Name="UploadedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SimulatorProcessDetails">
+          <Key>
+            <PropertyRef Name="SimulatorProcessID" />
+          </Key>
+          <Property Name="SimulatorProcessID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SimulatorID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="SchemaFileID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="SimulatorProcessStatus" Type="bit" Nullable="false" />
+          <Property Name="IsRemoved" Type="bit" Nullable="false" />
+          <Property Name="SizeOfDateReceived" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Simulators">
+          <Key>
+            <PropertyRef Name="SimulatorID" />
+          </Key>
+          <Property Name="SimulatorID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SimulatorName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="DateOfCreation" Type="datetime" Nullable="false" />
+          <Property Name="UserID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="URLDetails">
+          <Key>
+            <PropertyRef Name="URLDetailID" />
+          </Key>
+          <Property Name="URLDetailID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SimulatorID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="PostURL" Type="varchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserInRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="RoleID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="120" Nullable="false" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="120" Nullable="false" />
+          <Property Name="MobileNumber" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="320" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="IsFirstTimeLogin" Type="bit" Nullable="false" />
+          <Property Name="LoginFailureAttempts" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="PinCode" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Salt" Type="varchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__SchemaFil__Simul__1CF15040">
+          <End Role="Simulators" Type="Self.Simulators" Multiplicity="1" />
+          <End Role="SchemaFiles" Type="Self.SchemaFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Simulators">
+              <PropertyRef Name="SimulatorID" />
+            </Principal>
+            <Dependent Role="SchemaFiles">
+              <PropertyRef Name="SimulatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Simulator__Schem__22AA2996">
+          <End Role="SchemaFiles" Type="Self.SchemaFiles" Multiplicity="1" />
+          <End Role="SimulatorProcessDetails" Type="Self.SimulatorProcessDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchemaFiles">
+              <PropertyRef Name="SchemaFileID" />
+            </Principal>
+            <Dependent Role="SimulatorProcessDetails">
+              <PropertyRef Name="SchemaFileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Simulator__Simul__21B6055D">
+          <End Role="Simulators" Type="Self.Simulators" Multiplicity="1" />
+          <End Role="SimulatorProcessDetails" Type="Self.SimulatorProcessDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Simulators">
+              <PropertyRef Name="SimulatorID" />
+            </Principal>
+            <Dependent Role="SimulatorProcessDetails">
+              <PropertyRef Name="SimulatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Simulator__UserI__0519C6AF">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Simulators" Type="Self.Simulators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Simulators">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__URLDetail__Simul__276EDEB3">
+          <End Role="Simulators" Type="Self.Simulators" Multiplicity="1" />
+          <End Role="URLDetails" Type="Self.URLDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Simulators">
+              <PropertyRef Name="SimulatorID" />
+            </Principal>
+            <Dependent Role="URLDetails">
+              <PropertyRef Name="SimulatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserInRol__RoleI__1273C1CD">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UserInRoles" Type="Self.UserInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserInRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserInRol__UserI__117F9D94">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserInRoles" Type="Self.UserInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserInRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IoTDataSimulatorDBModelStoreContainer">
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchemaFiles" EntityType="Self.SchemaFiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SimulatorProcessDetails" EntityType="Self.SimulatorProcessDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Simulators" EntityType="Self.Simulators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="URLDetails" EntityType="Self.URLDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInRoles" EntityType="Self.UserInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__SchemaFil__Simul__1CF15040" Association="Self.FK__SchemaFil__Simul__1CF15040">
+            <End Role="Simulators" EntitySet="Simulators" />
+            <End Role="SchemaFiles" EntitySet="SchemaFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Simulator__Schem__22AA2996" Association="Self.FK__Simulator__Schem__22AA2996">
+            <End Role="SchemaFiles" EntitySet="SchemaFiles" />
+            <End Role="SimulatorProcessDetails" EntitySet="SimulatorProcessDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Simulator__Simul__21B6055D" Association="Self.FK__Simulator__Simul__21B6055D">
+            <End Role="Simulators" EntitySet="Simulators" />
+            <End Role="SimulatorProcessDetails" EntitySet="SimulatorProcessDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Simulator__UserI__0519C6AF" Association="Self.FK__Simulator__UserI__0519C6AF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Simulators" EntitySet="Simulators" />
+          </AssociationSet>
+          <AssociationSet Name="FK__URLDetail__Simul__276EDEB3" Association="Self.FK__URLDetail__Simul__276EDEB3">
+            <End Role="Simulators" EntitySet="Simulators" />
+            <End Role="URLDetails" EntitySet="URLDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserInRol__RoleI__1273C1CD" Association="Self.FK__UserInRol__RoleI__1273C1CD">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserInRoles" EntitySet="UserInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserInRol__UserI__117F9D94" Association="Self.FK__UserInRol__UserI__117F9D94">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserInRoles" EntitySet="UserInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IoTDataSimulatorDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="UserInRoles" Relationship="Self.FK__UserInRol__RoleI__1273C1CD" FromRole="Roles" ToRole="UserInRoles" />
+        </EntityType>
+        <EntityType Name="SchemaFile">
+          <Key>
+            <PropertyRef Name="SchemaFileID" />
+          </Key>
+          <Property Name="SchemaFileID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SimulatorID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="XSDFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Simulator" Relationship="Self.FK__SchemaFil__Simul__1CF15040" FromRole="SchemaFiles" ToRole="Simulators" />
+          <NavigationProperty Name="SimulatorProcessDetails" Relationship="Self.FK__Simulator__Schem__22AA2996" FromRole="SchemaFiles" ToRole="SimulatorProcessDetails" />
+        </EntityType>
+        <EntityType Name="SimulatorProcessDetail">
+          <Key>
+            <PropertyRef Name="SimulatorProcessID" />
+          </Key>
+          <Property Name="SimulatorProcessID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SimulatorID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="SchemaFileID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SimulatorProcessStatus" Type="Boolean" Nullable="false" />
+          <Property Name="IsRemoved" Type="Boolean" Nullable="false" />
+          <Property Name="SizeOfDateReceived" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="SchemaFile" Relationship="Self.FK__Simulator__Schem__22AA2996" FromRole="SimulatorProcessDetails" ToRole="SchemaFiles" />
+          <NavigationProperty Name="Simulator" Relationship="Self.FK__Simulator__Simul__21B6055D" FromRole="SimulatorProcessDetails" ToRole="Simulators" />
+        </EntityType>
+        <EntityType Name="Simulator">
+          <Key>
+            <PropertyRef Name="SimulatorID" />
+          </Key>
+          <Property Name="SimulatorID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SimulatorName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateOfCreation" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="SchemaFiles" Relationship="Self.FK__SchemaFil__Simul__1CF15040" FromRole="Simulators" ToRole="SchemaFiles" />
+          <NavigationProperty Name="SimulatorProcessDetails" Relationship="Self.FK__Simulator__Simul__21B6055D" FromRole="Simulators" ToRole="SimulatorProcessDetails" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Simulator__UserI__0519C6AF" FromRole="Simulators" ToRole="Users" />
+          <NavigationProperty Name="URLDetails" Relationship="Self.FK__URLDetail__Simul__276EDEB3" FromRole="Simulators" ToRole="URLDetails" />
+        </EntityType>
+        <EntityType Name="URLDetail">
+          <Key>
+            <PropertyRef Name="URLDetailID" />
+          </Key>
+          <Property Name="URLDetailID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SimulatorID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostURL" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Simulator" Relationship="Self.FK__URLDetail__Simul__276EDEB3" FromRole="URLDetails" ToRole="Simulators" />
+        </EntityType>
+        <EntityType Name="UserInRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="RoleID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__UserInRol__RoleI__1273C1CD" FromRole="UserInRoles" ToRole="Roles" />
+          <NavigationProperty Name="User" Relationship="Self.FK__UserInRol__UserI__117F9D94" FromRole="UserInRoles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="120" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="120" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="320" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastLoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsFirstTimeLogin" Type="Boolean" Nullable="false" />
+          <Property Name="LoginFailureAttempts" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="PinCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Simulators" Relationship="Self.FK__Simulator__UserI__0519C6AF" FromRole="Users" ToRole="Simulators" />
+          <NavigationProperty Name="UserInRoles" Relationship="Self.FK__UserInRol__UserI__117F9D94" FromRole="Users" ToRole="UserInRoles" />
+        </EntityType>
+        <Association Name="FK__UserInRol__RoleI__1273C1CD">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="UserInRoles" Type="Self.UserInRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserInRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SchemaFil__Simul__1CF15040">
+          <End Role="Simulators" Type="Self.Simulator" Multiplicity="1" />
+          <End Role="SchemaFiles" Type="Self.SchemaFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Simulators">
+              <PropertyRef Name="SimulatorID" />
+            </Principal>
+            <Dependent Role="SchemaFiles">
+              <PropertyRef Name="SimulatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Simulator__Schem__22AA2996">
+          <End Role="SchemaFiles" Type="Self.SchemaFile" Multiplicity="1" />
+          <End Role="SimulatorProcessDetails" Type="Self.SimulatorProcessDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchemaFiles">
+              <PropertyRef Name="SchemaFileID" />
+            </Principal>
+            <Dependent Role="SimulatorProcessDetails">
+              <PropertyRef Name="SchemaFileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Simulator__Simul__21B6055D">
+          <End Role="Simulators" Type="Self.Simulator" Multiplicity="1" />
+          <End Role="SimulatorProcessDetails" Type="Self.SimulatorProcessDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Simulators">
+              <PropertyRef Name="SimulatorID" />
+            </Principal>
+            <Dependent Role="SimulatorProcessDetails">
+              <PropertyRef Name="SimulatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Simulator__UserI__0519C6AF">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Simulators" Type="Self.Simulator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Simulators">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__URLDetail__Simul__276EDEB3">
+          <End Role="Simulators" Type="Self.Simulator" Multiplicity="1" />
+          <End Role="URLDetails" Type="Self.URLDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Simulators">
+              <PropertyRef Name="SimulatorID" />
+            </Principal>
+            <Dependent Role="URLDetails">
+              <PropertyRef Name="SimulatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserInRol__UserI__117F9D94">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserInRoles" Type="Self.UserInRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserInRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IoTDataSimulatorDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="SchemaFiles" EntityType="Self.SchemaFile" />
+          <EntitySet Name="SimulatorProcessDetails" EntityType="Self.SimulatorProcessDetail" />
+          <EntitySet Name="Simulators" EntityType="Self.Simulator" />
+          <EntitySet Name="URLDetails" EntityType="Self.URLDetail" />
+          <EntitySet Name="UserInRoles" EntityType="Self.UserInRole" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__UserInRol__RoleI__1273C1CD" Association="Self.FK__UserInRol__RoleI__1273C1CD">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserInRoles" EntitySet="UserInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SchemaFil__Simul__1CF15040" Association="Self.FK__SchemaFil__Simul__1CF15040">
+            <End Role="Simulators" EntitySet="Simulators" />
+            <End Role="SchemaFiles" EntitySet="SchemaFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Simulator__Schem__22AA2996" Association="Self.FK__Simulator__Schem__22AA2996">
+            <End Role="SchemaFiles" EntitySet="SchemaFiles" />
+            <End Role="SimulatorProcessDetails" EntitySet="SimulatorProcessDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Simulator__Simul__21B6055D" Association="Self.FK__Simulator__Simul__21B6055D">
+            <End Role="Simulators" EntitySet="Simulators" />
+            <End Role="SimulatorProcessDetails" EntitySet="SimulatorProcessDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Simulator__UserI__0519C6AF" Association="Self.FK__Simulator__UserI__0519C6AF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Simulators" EntitySet="Simulators" />
+          </AssociationSet>
+          <AssociationSet Name="FK__URLDetail__Simul__276EDEB3" Association="Self.FK__URLDetail__Simul__276EDEB3">
+            <End Role="Simulators" EntitySet="Simulators" />
+            <End Role="URLDetails" EntitySet="URLDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserInRol__UserI__117F9D94" Association="Self.FK__UserInRol__UserI__117F9D94">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserInRoles" EntitySet="UserInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IoTDataSimulatorDBModelStoreContainer" CdmEntityContainer="IoTDataSimulatorDBEntities">
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchemaFiles">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.SchemaFile">
+              <MappingFragment StoreEntitySet="SchemaFiles">
+                <ScalarProperty Name="SchemaFileID" ColumnName="SchemaFileID" />
+                <ScalarProperty Name="SimulatorID" ColumnName="SimulatorID" />
+                <ScalarProperty Name="XSDFile" ColumnName="XSDFile" />
+                <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SimulatorProcessDetails">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.SimulatorProcessDetail">
+              <MappingFragment StoreEntitySet="SimulatorProcessDetails">
+                <ScalarProperty Name="SimulatorProcessID" ColumnName="SimulatorProcessID" />
+                <ScalarProperty Name="SimulatorID" ColumnName="SimulatorID" />
+                <ScalarProperty Name="SchemaFileID" ColumnName="SchemaFileID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="SimulatorProcessStatus" ColumnName="SimulatorProcessStatus" />
+                <ScalarProperty Name="IsRemoved" ColumnName="IsRemoved" />
+                <ScalarProperty Name="SizeOfDateReceived" ColumnName="SizeOfDateReceived" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Simulators">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.Simulator">
+              <MappingFragment StoreEntitySet="Simulators">
+                <ScalarProperty Name="SimulatorID" ColumnName="SimulatorID" />
+                <ScalarProperty Name="SimulatorName" ColumnName="SimulatorName" />
+                <ScalarProperty Name="DateOfCreation" ColumnName="DateOfCreation" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="URLDetails">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.URLDetail">
+              <MappingFragment StoreEntitySet="URLDetails">
+                <ScalarProperty Name="URLDetailID" ColumnName="URLDetailID" />
+                <ScalarProperty Name="SimulatorID" ColumnName="SimulatorID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="PostURL" ColumnName="PostURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInRoles">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.UserInRole">
+              <MappingFragment StoreEntitySet="UserInRoles">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="IoTDataSimulatorDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="IsFirstTimeLogin" ColumnName="IsFirstTimeLogin" />
+                <ScalarProperty Name="LoginFailureAttempts" ColumnName="LoginFailureAttempts" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="PinCode" ColumnName="PinCode" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
